@@ -4,3 +4,4 @@ X_test.npy
 Y_test.npy
 *.h5
 *.keras
+__pycache__
