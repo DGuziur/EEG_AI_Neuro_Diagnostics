@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 class TestDataGenerator:
     def generateTestData():
+        print('Generuje dane testowe')
         data_dir = 'dataset/derivatives'
         labels_path = 'multi_labels.csv'
 
@@ -65,6 +66,14 @@ class TestDataGenerator:
         # Podział na train/test
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
+        print('Zapisuje test/train data')
+        np.save("X_test.npy", X_test)
+        np.save("Y_test.npy", Y_test)
+        np.save("X_train.npy", X_train)
+        np.save("Y_train.npy", Y_train)
         print("Dane gotowe do treningu!")
 
         return X_train, X_test, Y_train, Y_test
+
+if __name__ == '__main__':
+    TestDataGenerator.generateTestData()

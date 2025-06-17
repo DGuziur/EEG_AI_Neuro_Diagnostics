@@ -10,11 +10,10 @@ import matplotlib.pyplot as plt
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 # 📥 Dane EEG
-X_train, X_test, Y_train, Y_test = TestDataGenerator.generateTestData()
-
-# 📦 Zapis testowych danych na później
-np.save("X_test.npy", X_test)
-np.save("Y_test.npy", Y_test)
+X_test = np.load("X_test.npy")
+Y_test = np.load("Y_test.npy")
+X_train = np.load("X_train.npy")
+Y_train = np.load("Y_train.npy")
 
 # 🔍 Parametry
 n_channels = X_train.shape[1]
