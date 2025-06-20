@@ -1,8 +1,10 @@
-from testgene import TestDataGenerator
 import numpy as np
 
 # Zakładamy że masz dane z testgene
-X_train, X_test, Y_train, Y_test = TestDataGenerator.generateTestData()
+X_test = np.load("X_test.npy")
+Y_test = np.load("Y_test.npy")
+X_train = np.load("X_train.npy")
+Y_train = np.load("Y_train.npy")
 
 # Transpozycja na (samples, time, channels) – wymagane przez Transformer
 X_train = np.transpose(X_train, (0, 2, 1))  # (samples, 1000, 19)
@@ -44,7 +46,7 @@ class PositionalEncoding(Layer):
         return x + self.pos_encoding[:, :tf.shape(x)[1], :]
 
 
-def build_transformer_model(input_shape, num_labels, head_size=64, num_heads=2, ff_dim=64, num_transformer_blocks=1):
+def build_transformer_model(input_shape, num_labels, head_size=64, num_heads=4, ff_dim=128, num_transformer_blocks=2):
     inputs = tf.keras.Input(shape=input_shape)
 
     x = PositionalEncoding(maxlen=1000, dim=19)(inputs)

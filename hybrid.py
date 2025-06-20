@@ -49,37 +49,36 @@ def build_cnn_transformer_model(input_shape, num_labels,
     model = models.Model(inputs, outputs)
     return model
 
-if __name__ == '__main__':
-    X_test = np.load("X_test.npy")
-    Y_test = np.load("Y_test.npy")
-    X_train = np.load("X_train.npy")
-    Y_train = np.load("Y_train.npy")
+X_test = np.load("X_test.npy")
+Y_test = np.load("Y_test.npy")
+X_train = np.load("X_train.npy")
+Y_train = np.load("Y_train.npy")
 
-    X_train = np.transpose(X_train, (0, 2, 1))
-    X_test = np.transpose(X_test, (0, 2, 1))
+X_train = np.transpose(X_train, (0, 2, 1))
+X_test = np.transpose(X_test, (0, 2, 1))
 
-    model = build_cnn_transformer_model(
-        input_shape=X_train.shape[1:],  # (1000, 19)
-        num_labels=Y_train.shape[1],
-        head_size=64,
-        num_heads=4,
-        ff_dim=128,
-        num_transformer_blocks=2
-    )
+model = build_cnn_transformer_model(
+    input_shape=X_train.shape[1:],  # (1000, 19)
+    num_labels=Y_train.shape[1],
+    head_size=64,
+    num_heads=4,
+    ff_dim=128,
+    num_transformer_blocks=2
+)
 
-    model.compile(
-        loss='binary_crossentropy',
-        optimizer='adam',
-        metrics=['accuracy']
-    )
+model.compile(
+    loss='binary_crossentropy',
+    optimizer='adam',
+    metrics=['accuracy']
+)
 
-    model.summary()
+model.summary()
 
-    history = model.fit(
-        X_train, Y_train,
-        validation_data=(X_test, Y_test),
-        epochs=10,
-        batch_size=64
-    )
+history = model.fit(
+    X_train, Y_train,
+    validation_data=(X_test, Y_test),
+    epochs=10,
+    batch_size=64
+)
 
-    model.save_weights("cnn_transformer_hybrid.weights.h5")
+model.save_weights("cnn_transformer_hybrid.weights.h5")
