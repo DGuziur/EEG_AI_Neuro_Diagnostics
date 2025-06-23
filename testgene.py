@@ -14,9 +14,9 @@ class TestDataGenerator:
         data_dir = 'dataset/derivatives'
         labels_path = 'multi_labels.csv'
 
-        sampling_rate = 500  # Hz
-        window_sec = 2       # długość okna w sekundach
-        step_sec = 1         # przesunięcie (overlap) w sekundach
+        sampling_rate = 500 
+        window_sec = 2       
+        step_sec = 1         
         window_size = sampling_rate * window_sec
         step_size = sampling_rate * step_sec
 
@@ -38,10 +38,7 @@ class TestDataGenerator:
             file_path = os.path.join(sub_path, eeg_file[0])
             raw = mne.io.read_raw_eeglab(file_path, preload=True)
 
-            # Reprzekształcenie do NumPy: (channels, time)
             data = raw.get_data()
-
-            # Znormalizuj (opcjonalne)
             data = (data - np.mean(data, axis=1, keepdims=True)) / np.std(data, axis=1, keepdims=True)
 
             # Segmentuj dane na okna czasowe
@@ -50,14 +47,13 @@ class TestDataGenerator:
                 segment = data[:, start:start+window_size]  # shape: (channels, samples)
                 X.append(segment)
 
-                # Dopasuj etykiety
                 participant_id = sub
                 if participant_id not in labels_df.index:
                     continue
                 Y.append(labels_df.loc[participant_id].values)
 
         # Konwersja do NumPy
-        X = np.array(X)           # shape: (n_segments, n_channels, n_samples)
+        X = np.array(X)
         Y = np.array(Y).astype(int)
 
         print(f'X shape: {X.shape}, Y shape: {Y.shape}')
@@ -67,10 +63,10 @@ class TestDataGenerator:
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
         print('Zapisuje test/train data')
-        np.save("X_test.npy", X_test)
-        np.save("Y_test.npy", Y_test)
-        np.save("X_train.npy", X_train)
-        np.save("Y_train.npy", Y_train)
+        # np.save("X_test.npy", X_test)
+        # np.save("Y_test.npy", Y_test)
+        # np.save("X_train.npy", X_train)
+        # np.save("Y_train.npy", Y_train)
         print("Dane gotowe do treningu!")
 
         return X_train, X_test, Y_train, Y_test
